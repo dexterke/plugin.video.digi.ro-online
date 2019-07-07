@@ -1,3 +1,6 @@
+v 1.2.0
+- Added support for DIGI-Romania acounts login (https://www.digionline.ro/auth/login-digiro)
+
 v 1.1.0
 - Added 'Now playing Title' - 'Now playing Info' popup notification when loading channels.
 

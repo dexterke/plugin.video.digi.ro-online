@@ -3,8 +3,9 @@
   <category label="General Settings">
     <setting label="www.digionline.ro login" type="lsep"/>
 <!--     <setting label="Enable User Login" id="login_enabled" type="bool" default="false" /> -->
-    <setting label="Login User"        id="login_User"     type="text" default="testUser@rdslink.ro" />
-    <setting label="Login Password"    id="login_Password" type="text" default="testPassword"  option="hidden" />
+    <setting label="Select Account Type"       id="login_Type"      type="select"  values="Digi-Online|Digi-Romania" />
+    <setting label="Login User"         id="login_User"      type="text"    default="testUser@rdslink.ro" />
+    <setting label="Login Password"     id="login_Password"  type="text"    default="testPassword"  option="hidden" />
     <setting type="sep"/>
     <setting label="Playback" type="lsep"/>
     <setting label="OSD Info Popup" id="popup_Enabled" type="bool" default="true" />

@@ -20,7 +20,8 @@ import json
 
 ## Settings
 settings = xbmcaddon.Addon(id='plugin.video.digi.ro-online')
-cfg_dir = xbmc.translatePath(settings.getAddonInfo('profile') )
+cfg_dir = xbmc.translatePath(settings.getAddonInfo('profile'))
+login_Type = settings.getSetting('login_Type')
 login_User = settings.getSetting('login_User')
 login_Password = settings.getSetting('login_Password')
 debug_Enabled = settings.getSetting('debug_Enabled')
@@ -30,8 +31,16 @@ mainHost = 'digionline.ro'
 digiwebSite = 'www.digionline.ro'
 epgURL = 'https://' + digiwebSite + '/epg-xhr'
 apiURL = 'https://' + digiwebSite + '/api/stream'
-loginURL = 'https://www.digionline.ro/auth/login'
-login_Ks = 'https://www.digionline.ro/auth/login-kids'
+
+if login_Type == "Digi-Online":
+    loginURL = 'https://www.digionline.ro/auth/login'
+    post_auth={'form-login-email': login_User, 'form-login-password': login_Password}
+elif login_Type == "Digi-Romania":
+    loginURL = 'https://www.digionline.ro/auth/login-digiro'
+    post_auth={'form-login-digiro-email': login_User, 'form-login-digiro-password': login_Password}
+else:
+    xbmcgui.Dialog().ok('Plugin config error', 'Please configure this plugin')
+
 #deviceId = '03b86b83f30e2e84bd886d89343792e8.Chrome_72_Mac_a3892b32be1a471b2b1c66577299d295_PCBROWSER'
 deviceId = None
 userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
@@ -266,10 +275,9 @@ def processHTML(url):
       }
       try:
 	  write2file(log_File, 'processHTML session cookies: ' + str(session.cookies.get_dict()), 'a', 1, 0)
-	  post_data={'form-login-email': login_User, 'form-login-password': login_Password}
-	  req = session.post(loginURL, headers=headers, data=post_data)
+	  req = session.post(loginURL, headers=headers, data=post_auth)
 	  sp_code = req.status_code
-	  log_http_session(req, headers, 'POST', post_data, 0)
+	  log_http_session(req, headers, 'POST', post_auth, 0)
 	  write2file(html_f_2, req.content, 'w', 0, 0)
 
 	  if re.compile('<div class="form-error mb-10 color-red" style="font-size:18px; font-family: modena-bold;">').findall(req.content):
@@ -285,37 +293,6 @@ def processHTML(url):
       if sp_code != 200:
 	  write2file(log_File, 'processHTML ERROR: Could not perfom login, HTTP code: ' + str(sp_code), 'a', 0, 1)
 	  xbmcgui.Dialog().ok('Error', 'Could not perfom login, HTTP code: ' + str(sp_code))
-
-      #################### Step 3 #########################
-      ## Login to https://www.digionline.ro/auth/login-kids
-      #if sp_code == 200:
-	  #headers = {
-	      #'Host': digiwebSite,
-	      #'Connection': 'close',
-	      #'Cache-Control': 'max-age=0',
-	      #'Origin': 'https://www.digionline.ro',
-	      #'Upgrade-Insecure-Requests': '1',
-	      #'Content-type': 'application/x-www-form-urlencoded',
-	      #'User-Agent': userAgent,
-	      #'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-	      #'Referer': login_Ks,
-	      #'Accept-Encoding': 'identity',
-	      #'Accept-Language': 'en-ie'
-	      #}
-	  #try:
-	      #write2file(log_File, 'processHTML session cookies: ' + str(session.cookies.get_dict()), 'a', 1, 0)
-	      #post_data={'form-login-mode': 'mode-all'}
-	      #req = session.post(login_Ks, headers=headers, data=post_data, verify=False)
-	      #log_http_session(req, headers, 'POST', post_data, 0)
-	      #write2file(html_f_3, req.content, 'w', 0, 0)
-
-	  #except Exception as err:
-	    #write2file(log_File, 'processHTML ERROR: Could not perfom login: ' + str(err), 'a', 0, 1)
-	    #xbmcgui.Dialog().ok('Error', 'Could not perfom login: ' + str(err))
-
-	  #if req.status_code != 200:
-		#write2file(log_File, 'processHTML ERROR: Could not perfom login, HTTP code: ' + str(req.status_code), 'a', 0, 1)
-		#xbmcgui.Dialog().ok('Error', 'Could not perfom login, HTTP code: ' + str(req.status_code))
 
       ## Save cookie
       if sp_code == 200 and not section is None:
