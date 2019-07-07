@@ -140,14 +140,6 @@ def ROOT():
     addDir('TVR 1', 'https://www.digionline.ro/general/tvr1', setIcon('TVR1.png'))
     addDir('TVR 2', 'https://www.digionline.ro/general/tvr2', setIcon('TVR2.png'))
 
-    ## dkakat
-    #addDir('Digi24 Timisoara', 'https://www.digionline.ro/local/digi24-timisoara', setIcon('Digi24.png'))
-    #addDir('Digi24 Oradea', 'https://www.digionline.ro/local/digi24-oradea', setIcon('Digi24.png'))
-    #addDir('Digi24 Brasov', 'https://www.digionline.ro/local/digi24-brasov', setIcon('Digi24.png'))
-    #addDir('Digi24 Craiova', 'https://www.digionline.ro/local/digi24-craiova', setIcon('Digi24.png'))
-    #addDir('Digi24 Constanta', 'https://www.digionline.ro/local/digi24-constanta', setIcon('Digi24.png'))
-    #addDir('Digi24 Iasi', 'https://www.digionline.ro/local/digi24-iasi', setIcon('Digi24.png'))
-
 
 def addDir(name, url, iconimage):
     iconimage = urllib.unquote(urllib.unquote(iconimage))
@@ -350,10 +342,7 @@ def processHTML(url):
 	      ## CHANNEL ID
 	      #########################
 	      streamId = str((re.compile('"streamId":(.+?),').findall(html_text))[0])
-	      #balancerKey = str((re.compile('"balancerKey":"(.+?)"').findall(html_text))[0])
-	      #abr = str((re.compile('"abr":(.+?),').findall(html_text))[0])
 	      write2file(log_File, 'processHTML nowPlayingTitle: ' + nowPlayingInfo, 'a', 0, 0)
-	      #write2file(log_File, 'processHTML balancerKey: ' + balancerKey, 'a', 0, 0)
 	      write2file(log_File, 'processHTML streamId: ' + streamId, 'a', 0, 0)
 	      write2file(log_File, 'processHTML section: ' + section, 'a', 0, 0)
 	      ##
@@ -383,7 +372,6 @@ def processHTML(url):
 		##
 		try:
 		    write2file(log_File, 'processHTML session cookies: ' + str(session.cookies.get_dict()), 'a', 1, 0)
-		    #post_data={'id_stream': streamId, 'quality': 'abr'}
 		    post_data={'id_stream': streamId, 'quality': 'hq'}
 		    req = session.post(apiURL, headers=headers, data=post_data, verify=False)
 		    json_data = req.content
