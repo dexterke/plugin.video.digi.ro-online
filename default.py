@@ -39,7 +39,7 @@ elif login_Type == "Digi-Romania":
     loginURL = 'https://www.digionline.ro/auth/login-digiro'
     post_auth={'form-login-digiro-email': login_User, 'form-login-digiro-password': login_Password}
 else:
-    xbmcgui.Dialog().ok('Plugin config error', 'Please configure this plugin')
+    xbmcgui.Dialog().ok('Add-on config error', 'Please configure this Add-on')
 
 #deviceId = '03b86b83f30e2e84bd886d89343792e8.Chrome_72_Mac_a3892b32be1a471b2b1c66577299d295_PCBROWSER'
 deviceId = None
