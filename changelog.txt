@@ -1,3 +1,12 @@
+v 1.3.0
+- Added new TV Channels
+    JimJam
+    Comedy-est
+    Cinemaraton
+    HGTV
+    Cinethronix
+    AMC
+
 v 1.2.0
 - Added support for DIGI-Romania acounts login (https://www.digionline.ro/auth/login-digiro)
 

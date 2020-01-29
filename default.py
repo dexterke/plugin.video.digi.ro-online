@@ -102,6 +102,9 @@ def ROOT():
     addDir('BBC Earth', 'https://www.digionline.ro/tematice/bbc-earth', setIcon('BBC_Earth.png'))
     addDir('Digi Animal World', 'https://www.digionline.ro/tematice/digi-animal-world', setIcon('DigiAnimalWorld.png'))
     addDir('Viasat Nature', 'https://www.digionline.ro/tematice/viasat-nature', setIcon('ViasatNature.png'))
+    addDir('Cinethronix', 'https://www.digionline.ro/tematice/cinethronix', setIcon('Cinethronix.png'))
+
+    addDir('HGTV', 'https://www.digionline.ro/lifestyle/hgtv', setIcon('HGTV.png'))
     addDir('Fishing & Hunting', 'https://www.digionline.ro/lifestyle/fishing-and-hunting', setIcon('PVTV.png'))
     addDir('CBS Reality', 'https://www.digionline.ro/lifestyle/cbs-reality', setIcon('CBSReality.png'))
     addDir('TLC Entertainment', 'https://www.digionline.ro/tematice/tlc', setIcon('TLC.png'))
@@ -116,8 +119,11 @@ def ROOT():
     addDir('Comedy Central', 'https://www.digionline.ro/filme/comedy-central', setIcon('Comedy-Central.png'))
     addDir('TNT', 'https://www.digionline.ro/filme/tnt', setIcon('TNT2.png'))
     addDir('TV1000', 'https://www.digionline.ro/filme/tv-1000', setIcon('TV1000.png'))
+    addDir('AMC', 'https://www.digionline.ro/filme/amc', setIcon('AMC.png'))
     addDir('Epic Drama', 'https://www.digionline.ro/filme/epic-drama', setIcon('Epic-Drama.png'))
     addDir('Bollywood TV', 'https://www.digionline.ro/filme/bollywood-tv', setIcon('BollywoodTV.png'))
+    addDir('Cinemaraton', 'https://www.digionline.ro/filme/cinemaraton', setIcon('CineMaraton.png'))
+    addDir('Comedy-Est', 'https://www.digionline.ro/filme/comedy-est', setIcon('ComedyEst.png'))
 
     """
     # DRM
@@ -142,6 +148,7 @@ def ROOT():
     addDir('Cartoon Network', 'https://www.digionline.ro/copii/cartoon-network', setIcon('CartoonNetw.png'))
     addDir('Boomerang', 'https://www.digionline.ro/copii/boomerang', setIcon('Boomerang.png'))
     addDir('Davinci Learning', 'https://www.digionline.ro/copii/davinci-learning', setIcon('DaVinciLearning.png'))
+    addDir('JimJam', 'https://www.digionline.ro/copii/jimjam', setIcon('JimJam.png'))
 
     addDir('DigiSport 1', 'https://www.digionline.ro/sport/digisport-1', setIcon('DigiSport1.png'))
     addDir('DigiSport 2', 'https://www.digionline.ro/sport/digisport-2', setIcon('DigiSport2.png'))
@@ -239,7 +246,7 @@ def processHTML(url):
 
     try:
         #urllib3.contrib.pyopenssl.inject_into_urllib3()
-        #requests.packages.urllib3.disable_warnings()
+        requests.packages.urllib3.disable_warnings()
         session = requests.Session()
         if debug_Enabled == 'true':
             import logging
@@ -473,6 +480,7 @@ def parseInput(url):
         """Step 5 - Play stream."""
         if item is not None and result is not None:
             xbmcplugin.setContent(int(sys.argv[1]), 'videos')
+            link = link.replace('https:', 'http:')
             xbmc.Player().play(link, item)
             write2file(log_File, 'xbmc.Player().play(' + link + ',' + str(item) + ')', 'a')
             if osdInfo_Enabled == 'true':
@@ -500,15 +508,34 @@ def log_http_session(session, header, method, post_data, echo):
     write2file(log_File, 'processHTML url ' + str(session.url), 'a')
     write2file(log_File, 'processHTML send headers: ' + str(header), 'a')
     if method == 'POST':
-        write2file(log_File, 'processHTML post_data: ' + str(post_data), 'a')
-    write2file(log_File, 'processHTML status_code: ' + str(session.status_code), 'a')
-    write2file(log_File, 'processHTML received headers: ' + str(session.headers), 'a')
-    write2file(log_File, 'processHTML received cookies: ' + str(session.cookies.get_dict()), 'a')
+        write2file(
+            log_File,
+            'processHTML post_data: ' + str(post_data), 'a'
+        )
+    write2file(
+        log_File,
+        'processHTML status_code: ' + str(session.status_code), 'a'
+    )
+    write2file(
+        log_File,
+        'processHTML received headers: ' + str(session.headers), 'a'
+    )
+    write2file(
+        log_File, 'processHTML received cookies: ' +
+        str(session.cookies.get_dict()), 'a'
+    )
     for cookie in (session.cookies):
-        write2file(log_File, 'processHTML cookie: ' + str(cookie.__dict__), 'a')
+        write2file(
+            log_File,
+            'processHTML cookie: ' + str(cookie.__dict__), 'a'
+        )
     write2file(log_File, '\n', 'a')
     if echo:
-        write2file(log_File, 'processHTML received data: ---------- \n' + str(session.content), 'a')
+        write2file(
+            log_File,
+            'processHTML received data: ---------- \n' +
+            str(session.content), 'a'
+        )
 
 
 def logMyVars():
@@ -516,7 +543,11 @@ def logMyVars():
     if debug_Enabled == 'true':
         write2file(log_File, "Python version: " + str(sys.version), 'w')
         write2file(log_File, "Python info: " + str(sys.version_info), 'a')
-        write2file(log_File, "osdInfo_Enabled: " + str(osdInfo_Enabled) + "\nuserAgent: " + userAgent + "\nLogin_User: " + str(login_User), 'a')
+        write2file(
+            log_File, "osdInfo_Enabled: " + str(osdInfo_Enabled) +
+            "\nuserAgent: " + userAgent +
+            "\nLogin_User: " + str(login_User), 'a'
+        )
         write2file(log_File, "cfg_dir: " + str(cfg_dir), 'a')
     else:
         try:
