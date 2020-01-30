@@ -480,7 +480,6 @@ def parseInput(url):
         """Step 5 - Play stream."""
         if item is not None and result is not None:
             xbmcplugin.setContent(int(sys.argv[1]), 'videos')
-            link = link.replace('https:', 'http:')
             xbmc.Player().play(link, item)
             write2file(log_File, 'xbmc.Player().play(' + link + ',' + str(item) + ')', 'a')
             if osdInfo_Enabled == 'true':
