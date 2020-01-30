@@ -127,7 +127,8 @@ def ROOT():
 
     """
     # DRM
-    addDir('FilmNow', 'https://www.digionline.ro/filme/filmnow', setIcon('filmnow.png'))
+    addDir('Cinemax', 'https://www.digionline.ro/filme/cinemax', setIcon('Cinemax.png'))
+    addDir('Cinemax2', 'https://www.digionline.ro/filme/cinemax-2', setIcon('Cinemax2.png'))
     addDir('HBO Ro', 'https://www.digionline.ro/filme/hbo', setIcon('HBO.png'))
     addDir('HBO 2', 'https://www.digionline.ro/filme/hbo2', setIcon('HBO2.png'))
     addDir('HBO 3', 'https://www.digionline.ro/filme/hbo3', setIcon('HBO3.png'))
@@ -344,6 +345,7 @@ def processHTML(url):
             headers = {
                 'Host': digiwebSite,
                 'Connection': 'keep-alive',
+                #'Connection': 'close',
                 'Upgrade-Insecure-Requests': '1',
                 'User-Agent': userAgent,
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -394,7 +396,8 @@ def processHTML(url):
                 if streamId is not None:
                     headers = {
                         'Host': digiwebSite,
-                        'Connection': 'close',
+                        'Connection': 'keep-alive',
+                        #'Connection': 'close',
                         'Accept': '*/*',
                         'Origin': 'https://www.digionline.ro',
                         'X-Requested-With': 'XMLHttpRequest',
@@ -429,7 +432,8 @@ def processHTML(url):
                         write2file(log_File, 'processHTML digiHost: ' + str(digiHost), 'a')
                         headers = {
                             'Host': digiHost,
-                            'Connection': 'close',
+                            #'Connection': 'close',
+                            'Connection': 'keep-alive',
                             'Origin': 'https://www.digionline.ro',
                             'User-Agent': userAgent,
                             'Accept': '*/*',

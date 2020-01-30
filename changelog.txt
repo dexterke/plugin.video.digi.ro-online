@@ -6,6 +6,13 @@ v 1.3.0
     HGTV
     Cinethronix
     AMC
+- TV channels listed below do not work yet as they are DRM protected:
+    Cinemax
+    Cinemax2
+    FilmNow
+    HBO Ro
+    HBO 2
+    HBO 3
 
 v 1.2.0
 - Added support for DIGI-Romania acounts login (https://www.digionline.ro/auth/login-digiro)
