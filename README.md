@@ -1,7 +1,7 @@
 Digi.ro-Online
 ========================
 
-Kodi addon for accessing live TV programmes available on www.digionline.ro
+Kodi addon for accessing `digionline.ro` live TV channels.
 
 
 ---- Note ----

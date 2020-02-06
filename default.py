@@ -12,8 +12,6 @@ import os
 import re
 import sys
 import urllib
-#import certifi
-#import urllib3.contrib.pyopenssl
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -52,6 +50,8 @@ else:
       'Add-on config error', 'Please configure this Add-on'
     )
 
+connection = 'keep-alive'
+#connection = 'close'
 deviceId = None
 userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
@@ -236,7 +236,7 @@ def processHTML(url):
     """Step 1 - Load login URL, session acquire cookies."""
     headers = {
       'Host': digiwebSite,
-      'Connection': 'close',
+      'Connection': connection,
       'Cache-Control': 'max-age=0',
       'Upgrade-Insecure-Requests': '1',
       'User-Agent': userAgent,
@@ -246,7 +246,6 @@ def processHTML(url):
     }
 
     try:
-        #urllib3.contrib.pyopenssl.inject_into_urllib3()
         requests.packages.urllib3.disable_warnings()
         session = requests.Session()
         if debug_Enabled == 'true':
@@ -289,7 +288,7 @@ def processHTML(url):
 
         headers = {
             'Host': digiwebSite,
-            'Connection': 'close',
+            'Connection': connection,
             'Cache-Control': 'max-age=0',
             'Origin': 'https://www.digionline.ro',
             'Upgrade-Insecure-Requests': '1',
@@ -344,8 +343,7 @@ def processHTML(url):
             """Step 3 - Load TV Channel URL"""
             headers = {
                 'Host': digiwebSite,
-                'Connection': 'keep-alive',
-                #'Connection': 'close',
+                'Connection': connection,
                 'Upgrade-Insecure-Requests': '1',
                 'User-Agent': userAgent,
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -396,8 +394,7 @@ def processHTML(url):
                 if streamId is not None:
                     headers = {
                         'Host': digiwebSite,
-                        'Connection': 'keep-alive',
-                        #'Connection': 'close',
+                        'Connection': connection,
                         'Accept': '*/*',
                         'Origin': 'https://www.digionline.ro',
                         'X-Requested-With': 'XMLHttpRequest',
@@ -426,13 +423,12 @@ def processHTML(url):
                         write2file(log_File, 'processHTML json stream_url: ' + str(stream_url), 'a')
                         link = str(stream_url["stream_url"])
                         if 'https://' not in link:
-                            link = ''.join(('https:', link))
+                            link = ''.join(('https:', link + '|User-Agent=' + userAgent + '&Referer=' + url))
                         write2file(log_File, 'processHTML detected link: ' + str(link), 'a')
                         digiHost = str(re.compile('https://(.+?)/').findall(link)[0])
                         write2file(log_File, 'processHTML digiHost: ' + str(digiHost), 'a')
                         headers = {
                             'Host': digiHost,
-                            #'Connection': 'close',
                             'Connection': 'keep-alive',
                             'Origin': 'https://www.digionline.ro',
                             'User-Agent': userAgent,
