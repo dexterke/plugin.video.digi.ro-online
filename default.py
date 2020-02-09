@@ -53,6 +53,7 @@ else:
 connection = 'keep-alive'
 #connection = 'close'
 deviceId = None
+
 userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
 log_File = os.path.join(cfg_dir, 'plugin_video_digionline.ro.log')
@@ -79,51 +80,79 @@ def setIcon(thumb_file):
         thumb_file_name = movies_thumb
     return thumb_file_name
 
+channels = {
+    1: {'title': 'Digi24', 'path': 'stiri/digi24', 'icon': 'Digi24.png'},
+    2: {'title': 'B1 TV', 'path': 'stiri/b1tv', 'icon': 'B1TV.png'},
+    3: {'title': 'Realitatea TV', 'path': 'stiri/realitatea-tv', 'icon': 'RealitateaTV.png'},
+    4: {'title': 'Romania TV', 'path': 'stiri/romania-tv', 'icon': 'RomaniaTV.png'},
+    5: {'title': 'France 24 [EN]', 'path': 'extern/france-24', 'icon': 'France24.png'},
+    6: {'title': 'TV5 Monde [FR]', 'path': 'extern/tv5-monde', 'icon': 'tv5monde.png'},
+    7: {'title': 'CNN [EN]', 'path': 'extern/cnn', 'icon': 'CNN.png'},
+    8: {'title': 'Travel Channel', 'path': 'lifestyle/travel-channel', 'icon': 'TravelChannel.png'},
+    9: {'title': 'Paprika TV', 'path': 'lifestyle/tv-paprika', 'icon': 'PaprikaTV.png'},
+    10: {'title': 'Digi Life', 'path': 'tematice/digi-life', 'icon': 'DigiLife.png'},
+    11: {'title': 'Digi World', 'path': 'tematice/digi-world', 'icon': 'DigiWorld.png'},
+    12: {'title': 'Viasat Explorer', 'path': 'tematice/viasat-explorer', 'icon': 'ViasatExplore.png'},
+    13: {'title': 'Discovery Channel', 'path': 'tematice/discovery-channel', 'icon': 'DiscoveryChannel.png'},
+    14: {'title': 'National Geographic', 'path': 'tematice/national-geographic', 'icon': 'NatGeographic.png'},
+    15: {'title': 'History Channel', 'path': 'tematice/history-channel', 'icon': 'HistoryChannel.png'},
+    16: {'title': 'Viasat History', 'path': 'tematice/viasat-history', 'icon': 'ViasatHistory.png'},
+    17: {'title': 'National Geographic Wild', 'path': 'tematice/national-geographic-wild', 'icon': 'NatGeoWild.png'},
+    18: {'title': 'BBC Earth', 'path': 'tematice/bbc-earth', 'icon': 'BBC_Earth.png'},
+    19: {'title': 'Digi Animal World', 'path': 'tematice/digi-animal-world', 'icon': 'DigiAnimalWorld.png'},
+    20: {'title': 'Viasat Nature', 'path': 'tematice/viasat-nature', 'icon': 'ViasatNature.png'},
+    21: {'title': 'Cinethronix', 'path': 'tematice/cinethronix', 'icon': 'Cinethronix.png'},
+    22: {'title': 'HGTV', 'path': 'lifestyle/hgtv', 'icon': 'HGTV.png'},
+    23: {'title': 'Fishing & Hunting', 'path': 'lifestyle/fishing-and-hunting', 'icon': 'PVTV.png'},
+    24: {'title': 'CBS Reality', 'path': 'lifestyle/cbs-reality', 'icon': 'CBSReality.png'},
+    25: {'title': 'TLC Entertainment', 'path': 'tematice/tlc', 'icon': 'TLC.png'},
+    26: {'title': 'Travel Mix', 'path': 'lifestyle/travel-mix-channel', 'icon': 'TravelMix.png'},
+    27: {'title': 'E Entertainment', 'path': 'lifestyle/e-entertainment', 'icon': 'EpopDeCulture.png'},
+    28: {'title': 'AXN', 'path': 'filme/axn', 'icon': 'AXN.png'},
+    29: {'title': 'AXN Spin', 'path': 'filme/axn-spin', 'icon': 'AXN_Spin.png'},
+    30: {'title': 'AXN White', 'path': 'filme/axn-white', 'icon': 'AXN_White.png'},
+    31: {'title': 'AXN Black', 'path': 'filme/axn-black', 'icon': 'AXN_Black.png'},
+    32: {'title': 'Film Cafe', 'path': 'filme/film-cafe', 'icon': 'FilmCafe.png'},
+    33: {'title': 'Comedy Central', 'path': 'filme/comedy-central', 'icon': 'Comedy-Central.png'},
+    34: {'title': 'TNT', 'path': 'filme/tnt', 'icon': 'TNT2.png'},
+    35: {'title': 'TV1000', 'path': 'filme/tv-1000', 'icon': 'TV1000.png'},
+    36: {'title': 'AMC', 'path': 'filme/amc', 'icon': 'AMC.png'},
+    37: {'title': 'Epic Drama', 'path': 'filme/epic-drama', 'icon': 'Epic-Drama.png'},
+    38: {'title': 'Bollywood TV', 'path': 'filme/bollywood-tv', 'icon': 'BollywoodTV.png'},
+    39: {'title': 'Cinemaraton', 'path': 'filme/cinemaraton', 'icon': 'CineMaraton.png'},
+    40: {'title': 'Comedy-Est', 'path': 'filme/comedy-est', 'icon': 'ComedyEst.png'},
+    41: {'title': 'UTV', 'path': 'muzica/u-tv', 'icon': 'UTV.png'},
+    42: {'title': 'Music Channel', 'path': 'muzica/music-channel', 'icon': 'MusicChannel.png'},
+    43: {'title': 'Kiss TV', 'path': 'muzica/kiss-tv', 'icon': 'KissTV.png'},
+    44: {'title': 'HitMusic Channel', 'path': 'muzica/hit-music-channel', 'icon': 'HitMusicChannel.png'},
+    45: {'title': 'Mezzo', 'path': 'muzica/mezzo', 'icon': 'Mezzo.png'},
+    46: {'title': 'Slager TV [HU]', 'path': 'muzica/slager-tv', 'icon': 'SlagerTV.png'},
+    47: {'title': 'Disney Channel', 'path': 'copii/disney-channel', 'icon': 'DisneyChannel.png'},
+    48: {'title': 'Nickelodeon', 'path': 'copii/nickelodeon', 'icon': 'Nickelodeon.png'},
+    49: {'title': 'Minimax', 'path': 'copii/minimax', 'icon': 'Minimax.png'},
+    50: {'title': 'Disney Junior', 'path': 'copii/disney-junior', 'icon': 'DisneyJunior.png'},
+    51: {'title': 'Cartoon Network', 'path': 'copii/cartoon-network', 'icon': 'CartoonNetw.png'},
+    52: {'title': 'Boomerang', 'path': 'copii/boomerang', 'icon': 'Boomerang.png'},
+    53: {'title': 'Davinci Learning', 'path': 'copii/davinci-learning', 'icon': 'DaVinciLearning.png'},
+    54: {'title': 'JimJam', 'path': 'copii/jimjam', 'icon': 'JimJam.png'},
+    55: {'title': 'DigiSport 1', 'path': 'sport/digisport-1', 'icon': 'DigiSport1.png'},
+    56: {'title': 'DigiSport 2', 'path': 'sport/digisport-2', 'icon': 'DigiSport2.png'},
+    57: {'title': 'DigiSport 3', 'path': 'sport/digisport-3', 'icon': 'DigiSport3.png'},
+    58: {'title': 'DigiSport 4', 'path': 'sport/digisport-4', 'icon': 'DigiSport4.png'},
+    59: {'title': 'EuroSport 1', 'path': 'sport/eurosport', 'icon': 'EuroSport1.png'},
+    60: {'title': 'EuroSport 2', 'path': 'sport/eurosport2', 'icon': 'EuroSport2.png'},
+    61: {'title': 'TVR 1', 'path': 'general/tvr1', 'icon': 'TVR1.png'},
+    62: {'title': 'TVR 2', 'path': 'general/tvr2', 'icon': 'TVR2.png'},
+}
+
 
 def ROOT():
-    addDir('Digi24', 'https://www.digionline.ro/stiri/digi24', setIcon('Digi24.png'))
-    addDir('B1 TV', 'https://www.digionline.ro/stiri/b1tv', setIcon('B1TV.png'))
-    addDir('Realitatea TV', 'https://www.digionline.ro/stiri/realitatea-tv', setIcon('RealitateaTV.png'))
-    addDir('Romania TV', 'https://www.digionline.ro/stiri/romania-tv', setIcon('RomaniaTV.png'))
-    addDir('France 24 [EN]', 'https://www.digionline.ro/extern/france-24', setIcon('France24.png'))
-    addDir('TV5 Monde [FR]', 'https://www.digionline.ro/extern/tv5-monde', setIcon('tv5monde.png'))
-    addDir('CNN [EN]', 'https://www.digionline.ro/extern/cnn', setIcon('CNN.png'))
+    """Default view & build channel list."""
 
-    addDir('Travel Channel', 'https://www.digionline.ro/lifestyle/travel-channel', setIcon('TravelChannel.png'))
-    addDir('Paprika TV', 'https://www.digionline.ro/lifestyle/tv-paprika', setIcon('PaprikaTV.png'))
-    addDir('Digi Life', 'https://www.digionline.ro/tematice/digi-life', setIcon('DigiLife.png'))
-    addDir('Digi World', 'https://www.digionline.ro/tematice/digi-world', setIcon('DigiWorld.png'))
-    addDir('Viasat Explorer', 'https://www.digionline.ro/tematice/viasat-explorer', setIcon('ViasatExplore.png'))
-    addDir('Discovery Channel', 'https://www.digionline.ro/tematice/discovery-channel', setIcon('DiscoveryChannel.png'))
-    addDir('National Geographic', 'https://www.digionline.ro/tematice/national-geographic', setIcon('NatGeographic.png'))
-    addDir('History Channel', 'https://www.digionline.ro/tematice/history-channel', setIcon('HistoryChannel.png'))
-    addDir('Viasat History', 'https://www.digionline.ro/tematice/viasat-history', setIcon('ViasatHistory.png'))
-    addDir('National Geographic Wild', 'https://www.digionline.ro/tematice/national-geographic-wild', setIcon('NatGeoWild.png'))
-    addDir('BBC Earth', 'https://www.digionline.ro/tematice/bbc-earth', setIcon('BBC_Earth.png'))
-    addDir('Digi Animal World', 'https://www.digionline.ro/tematice/digi-animal-world', setIcon('DigiAnimalWorld.png'))
-    addDir('Viasat Nature', 'https://www.digionline.ro/tematice/viasat-nature', setIcon('ViasatNature.png'))
-    addDir('Cinethronix', 'https://www.digionline.ro/tematice/cinethronix', setIcon('Cinethronix.png'))
-
-    addDir('HGTV', 'https://www.digionline.ro/lifestyle/hgtv', setIcon('HGTV.png'))
-    addDir('Fishing & Hunting', 'https://www.digionline.ro/lifestyle/fishing-and-hunting', setIcon('PVTV.png'))
-    addDir('CBS Reality', 'https://www.digionline.ro/lifestyle/cbs-reality', setIcon('CBSReality.png'))
-    addDir('TLC Entertainment', 'https://www.digionline.ro/tematice/tlc', setIcon('TLC.png'))
-    addDir('Travel Mix', 'https://www.digionline.ro/lifestyle/travel-mix-channel', setIcon('TravelMix.png'))
-    addDir('E Entertainment', 'https://www.digionline.ro/lifestyle/e-entertainment', setIcon('EpopDeCulture.png'))
-
-    addDir('AXN', 'https://www.digionline.ro/filme/axn', setIcon('AXN.png'))
-    addDir('AXN Spin', 'https://www.digionline.ro/filme/axn-spin', setIcon('AXN_Spin.png'))
-    addDir('AXN White', 'https://www.digionline.ro/filme/axn-white', setIcon('AXN_White.png'))
-    addDir('AXN Black', 'https://www.digionline.ro/filme/axn-black', setIcon('AXN_Black.png'))
-    addDir('Film Cafe', 'https://www.digionline.ro/filme/film-cafe', setIcon('FilmCafe.png'))
-    addDir('Comedy Central', 'https://www.digionline.ro/filme/comedy-central', setIcon('Comedy-Central.png'))
-    addDir('TNT', 'https://www.digionline.ro/filme/tnt', setIcon('TNT2.png'))
-    addDir('TV1000', 'https://www.digionline.ro/filme/tv-1000', setIcon('TV1000.png'))
-    addDir('AMC', 'https://www.digionline.ro/filme/amc', setIcon('AMC.png'))
-    addDir('Epic Drama', 'https://www.digionline.ro/filme/epic-drama', setIcon('Epic-Drama.png'))
-    addDir('Bollywood TV', 'https://www.digionline.ro/filme/bollywood-tv', setIcon('BollywoodTV.png'))
-    addDir('Cinemaraton', 'https://www.digionline.ro/filme/cinemaraton', setIcon('CineMaraton.png'))
-    addDir('Comedy-Est', 'https://www.digionline.ro/filme/comedy-est', setIcon('ComedyEst.png'))
+    for i in range(len(channels)):
+        idx = i + 1
+        url = ''.join(('https://', digiwebSite, '/', channels[idx].get('path')))
+        addDir(channels[idx].get('title'), url, setIcon(channels[idx].get('icon')))
 
     """
     # DRM
@@ -133,33 +162,6 @@ def ROOT():
     addDir('HBO 2', 'https://www.digionline.ro/filme/hbo2', setIcon('HBO2.png'))
     addDir('HBO 3', 'https://www.digionline.ro/filme/hbo3', setIcon('HBO3.png'))
     """
-
-    addDir('UTV', 'https://www.digionline.ro/muzica/u-tv', setIcon('UTV.png'))
-    addDir('Music Channel', 'https://www.digionline.ro/muzica/music-channel', setIcon('MusicChannel.png'))
-    addDir('Kiss TV', 'https://www.digionline.ro/muzica/kiss-tv', setIcon('KissTV.png'))
-    addDir('HitMusic Channel', 'https://www.digionline.ro/muzica/hit-music-channel', setIcon('HitMusicChannel.png'))
-    addDir('Mezzo', 'https://www.digionline.ro/muzica/mezzo', setIcon('Mezzo.png'))
-    addDir('Slager TV [HU]', 'https://www.digionline.ro/muzica/slager-tv', setIcon('SlagerTV.png'))
-
-    addDir('Disney Channel', 'https://www.digionline.ro/copii/disney-channel', setIcon('DisneyChannel.png'))
-    addDir('Megamax', 'https://www.digionline.ro/copii/megamax', setIcon('Megamax.png'))
-    addDir('Nickelodeon', 'https://www.digionline.ro/copii/nickelodeon', setIcon('Nickelodeon.png'))
-    addDir('Minimax', 'https://www.digionline.ro/copii/minimax', setIcon('Minimax.png'))
-    addDir('Disney Junior', 'https://www.digionline.ro/copii/disney-junior', setIcon('DisneyJunior.png'))
-    addDir('Cartoon Network', 'https://www.digionline.ro/copii/cartoon-network', setIcon('CartoonNetw.png'))
-    addDir('Boomerang', 'https://www.digionline.ro/copii/boomerang', setIcon('Boomerang.png'))
-    addDir('Davinci Learning', 'https://www.digionline.ro/copii/davinci-learning', setIcon('DaVinciLearning.png'))
-    addDir('JimJam', 'https://www.digionline.ro/copii/jimjam', setIcon('JimJam.png'))
-
-    addDir('DigiSport 1', 'https://www.digionline.ro/sport/digisport-1', setIcon('DigiSport1.png'))
-    addDir('DigiSport 2', 'https://www.digionline.ro/sport/digisport-2', setIcon('DigiSport2.png'))
-    addDir('DigiSport 3', 'https://www.digionline.ro/sport/digisport-3', setIcon('DigiSport3.png'))
-    addDir('DigiSport 4', 'https://www.digionline.ro/sport/digisport-4', setIcon('DigiSport4.png'))
-    addDir('EuroSport 1', 'https://www.digionline.ro/sport/eurosport', setIcon('EuroSport1.png'))
-    addDir('EuroSport 2', 'https://www.digionline.ro/sport/eurosport2', setIcon('EuroSport2.png'))
-
-    addDir('TVR 1', 'https://www.digionline.ro/general/tvr1', setIcon('TVR1.png'))
-    addDir('TVR 2', 'https://www.digionline.ro/general/tvr2', setIcon('TVR2.png'))
 
 
 def addDir(name, url, iconimage):
@@ -218,7 +220,7 @@ def processHTML(url):
 
     link = None
     session = None
-    section = None
+    category = None
     req = None
     html_text = None
     sp_code = 404
@@ -227,11 +229,11 @@ def processHTML(url):
     url = html_parser.unescape(url)
 
     try:
-        section = str(re.compile('.ro/(.+?)/').findall(url)[0])
+        category = str(re.compile('.ro/(.+?)/').findall(url)[0])
     except:
         pass
 
-    write2file(log_File, 'processHTML received URL: ' + url + ' - Section: ' + str(section) + '\n', 'a')
+    write2file(log_File, 'processHTML received URL: ' + url + ' - Section: ' + str(category) + '\n', 'a')
 
     """Step 1 - Load login URL, session acquire cookies."""
     headers = {
@@ -328,7 +330,7 @@ def processHTML(url):
             xbmcgui.Dialog().ok('Error', msg)
 
         """Save cookie."""
-        if sp_code == 200 and section is not None:
+        if sp_code == 200 and category is not None:
             for key, value in session.cookies.get_dict().iteritems():
                 write2file(log_File, 'processHTML session cookie: ' + str(key) + ', value: ' + str(value), 'a')
                 if str(key) == "deviceId":
@@ -348,7 +350,7 @@ def processHTML(url):
                 'User-Agent': userAgent,
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                 'Cache-Control': 'max-age=0',
-                'Referer': 'https://' + digiwebSite + '/' + section,
+                'Referer': 'https://' + digiwebSite + '/' + category,
                 'Accept-Encoding': 'identity',
                 'Accept-Language': 'en-ie'
             }
@@ -373,7 +375,7 @@ def processHTML(url):
                 """Extract 'now-playing' info from HTML."""
                 nowPlaying_Info = " - "
                 if osdInfo_Enabled == 'true':
-                    txt = str((re.compile('<h2 class="section-title-alt" id="title">(.+?)<\/h2>').findall(html_text))[0])
+                    txt = str((re.compile('<h2 class="category-title-alt" id="title">(.+?)<\/h2>').findall(html_text))[0])
                     write2file(log_File, 'processHTML nowPlaying txt: ' + txt, 'a')
                     nowPlaying_Info = html_parser.unescape(txt).replace("&period;", ".").replace("&colon;", ":").replace("&amp;", "&").replace("&commat;", "@")
             except Exception as err:
@@ -387,7 +389,7 @@ def processHTML(url):
                     streamId = str((re.compile('"streamId":(.+?),').findall(html_text))[0])
                     write2file(log_File, 'processHTML nowPlayingTitle: ' + nowPlaying_Info, 'a')
                     write2file(log_File, 'processHTML streamId: ' + streamId, 'a')
-                    write2file(log_File, 'processHTML section: ' + section, 'a')
+                    write2file(log_File, 'processHTML category: ' + category, 'a')
                 except:
                     pass
 
