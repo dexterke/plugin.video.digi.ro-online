@@ -8,6 +8,7 @@
 ####################################################
 
 import HTMLParser as html
+import logging
 import os
 import re
 import sys
@@ -253,7 +254,6 @@ def processHTML(url):
         requests.packages.urllib3.disable_warnings()
         session = requests.Session()
         if debug_Enabled == 'true':
-            import logging
             logging.basicConfig()
             logging.getLogger().setLevel(logging.DEBUG)
             requests_log = logging.getLogger('requests.packages.urllib3')
