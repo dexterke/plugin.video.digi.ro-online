@@ -18,6 +18,7 @@ import xbmcgui
 import xbmcplugin
 import requests
 import json
+from bs4 import BeautifulSoup
 
 """Settings."""
 settings = xbmcaddon.Addon(id='plugin.video.digi.ro-online')
@@ -214,6 +215,7 @@ def processHTML(url):
     """Load HTML, extract playlist URL & 'now playing' info."""
     global result
     global nowPlaying_Info
+    global nowPlaying_Plot
     global deviceId
     global session
     global theader
@@ -375,11 +377,21 @@ def processHTML(url):
                 """Extract 'now-playing' info from HTML."""
                 nowPlaying_Info = " - "
                 if osdInfo_Enabled == 'true':
-                    txt = str((re.compile('<h2 class="category-title-alt" id="title">(.+?)<\/h2>').findall(html_text))[0])
+                    txt = str((re.compile('<h2 class="section-title-alt" id="title">(.+?)<\/h2>').findall(html_text))[0])
                     write2file(log_File, 'processHTML nowPlaying txt: ' + txt, 'a')
-                    nowPlaying_Info = html_parser.unescape(txt).replace("&period;", ".").replace("&colon;", ":").replace("&amp;", "&").replace("&commat;", "@")
+                    nowPlaying_Info = BeautifulSoup(txt, 'html5lib').text.strip()
             except Exception as err:
                 write2file(log_File, 'processHTML ERROR: could not detect nowPlaying_Info: ' + str(err), 'a')
+
+            try:
+                """Extract 'now-playing' plot from HTML."""
+                nowPlaying_Plot = " - "
+                if osdInfo_Enabled == 'true':
+                    txt = str((re.compile(r'<p id="synopsis">(.+?)<\/p>', re.DOTALL).findall(html_text))[0])
+                    write2file(log_File, 'processHTML nowPlaying plot: ' + txt, 'a')
+                    nowPlaying_Plot = BeautifulSoup(txt, 'html5lib').text.strip()
+            except Exception as err:
+                write2file(log_File, 'processHTML ERROR: could not detect nowPlaying_Plot: ' + str(err), 'a')
 
             """Step 4 - Process HTTP data"""
             if req.status_code == 200 and html_text is not None:
@@ -470,6 +482,8 @@ def parseInput(url):
                     'mediatype': 'video',
                     'genre': 'Live Stream',
                     'title': nowPlayingTitle,
+                    'tagline': nowPlaying_Info,
+                    'plot': nowPlaying_Plot,
                     'playcount': '1'
                 }
             )
@@ -572,6 +586,7 @@ url = None
 nowPlayingThumb = None
 nowPlayingTitle = None
 nowPlaying_Info = None
+nowPlaying_Plot = None
 logMyVars()
 
 try:
