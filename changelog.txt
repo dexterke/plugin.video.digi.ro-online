@@ -1,3 +1,6 @@
+v 1.4.0
+- Added plot information (thanks to @BlueTM)
+
 v 1.3.2
 - Removed Megamax (no longer provided by DIGI.ro)
 
