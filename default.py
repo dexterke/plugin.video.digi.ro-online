@@ -53,7 +53,6 @@ else:
     )
 
 connection = 'keep-alive'
-#connection = 'close'
 deviceId = None
 
 userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
@@ -73,88 +72,88 @@ addon_fanart = os.path.join(settings.getAddonInfo('path'), 'fanart.jpg')
 
 
 def setIcon(thumb_file):
-    thumb_file_name = thumb_file.replace(' ', '')[:-4].upper()
     try:
         thumb_file_name = os.path.join(
             settings.getAddonInfo('path'), 'resources', 'media', thumb_file
         )
     except:
         thumb_file_name = movies_thumb
+
     return thumb_file_name
 
-channels = {
-    1: {'title': 'Digi24', 'path': 'stiri/digi24', 'icon': 'Digi24.png'},
-    2: {'title': 'B1 TV', 'path': 'stiri/b1tv', 'icon': 'B1TV.png'},
-    3: {'title': 'Realitatea TV', 'path': 'stiri/realitatea-tv', 'icon': 'RealitateaTV.png'},
-    4: {'title': 'Romania TV', 'path': 'stiri/romania-tv', 'icon': 'RomaniaTV.png'},
-    5: {'title': 'France 24 [EN]', 'path': 'extern/france-24', 'icon': 'France24.png'},
-    6: {'title': 'TV5 Monde [FR]', 'path': 'extern/tv5-monde', 'icon': 'tv5monde.png'},
-    7: {'title': 'CNN [EN]', 'path': 'extern/cnn', 'icon': 'CNN.png'},
-    8: {'title': 'Travel Channel', 'path': 'lifestyle/travel-channel', 'icon': 'TravelChannel.png'},
-    9: {'title': 'Paprika TV', 'path': 'lifestyle/tv-paprika', 'icon': 'PaprikaTV.png'},
-    10: {'title': 'Digi Life', 'path': 'tematice/digi-life', 'icon': 'DigiLife.png'},
-    11: {'title': 'Digi World', 'path': 'tematice/digi-world', 'icon': 'DigiWorld.png'},
-    12: {'title': 'Viasat Explorer', 'path': 'tematice/viasat-explorer', 'icon': 'ViasatExplore.png'},
-    13: {'title': 'Discovery Channel', 'path': 'tematice/discovery-channel', 'icon': 'DiscoveryChannel.png'},
-    14: {'title': 'National Geographic', 'path': 'tematice/national-geographic', 'icon': 'NatGeographic.png'},
-    15: {'title': 'History Channel', 'path': 'tematice/history-channel', 'icon': 'HistoryChannel.png'},
-    16: {'title': 'Viasat History', 'path': 'tematice/viasat-history', 'icon': 'ViasatHistory.png'},
-    17: {'title': 'National Geographic Wild', 'path': 'tematice/national-geographic-wild', 'icon': 'NatGeoWild.png'},
-    18: {'title': 'BBC Earth', 'path': 'tematice/bbc-earth', 'icon': 'BBC_Earth.png'},
-    19: {'title': 'Digi Animal World', 'path': 'tematice/digi-animal-world', 'icon': 'DigiAnimalWorld.png'},
-    20: {'title': 'Viasat Nature', 'path': 'tematice/viasat-nature', 'icon': 'ViasatNature.png'},
-    21: {'title': 'Cinethronix', 'path': 'tematice/cinethronix', 'icon': 'Cinethronix.png'},
-    22: {'title': 'HGTV', 'path': 'lifestyle/hgtv', 'icon': 'HGTV.png'},
-    23: {'title': 'Fishing & Hunting', 'path': 'lifestyle/fishing-and-hunting', 'icon': 'PVTV.png'},
-    24: {'title': 'CBS Reality', 'path': 'lifestyle/cbs-reality', 'icon': 'CBSReality.png'},
-    25: {'title': 'TLC Entertainment', 'path': 'tematice/tlc', 'icon': 'TLC.png'},
-    26: {'title': 'Travel Mix', 'path': 'lifestyle/travel-mix-channel', 'icon': 'TravelMix.png'},
-    27: {'title': 'E Entertainment', 'path': 'lifestyle/e-entertainment', 'icon': 'EpopDeCulture.png'},
-    28: {'title': 'AXN', 'path': 'filme/axn', 'icon': 'AXN.png'},
-    29: {'title': 'AXN Spin', 'path': 'filme/axn-spin', 'icon': 'AXN_Spin.png'},
-    30: {'title': 'AXN White', 'path': 'filme/axn-white', 'icon': 'AXN_White.png'},
-    31: {'title': 'AXN Black', 'path': 'filme/axn-black', 'icon': 'AXN_Black.png'},
-    32: {'title': 'Film Cafe', 'path': 'filme/film-cafe', 'icon': 'FilmCafe.png'},
-    33: {'title': 'Comedy Central', 'path': 'filme/comedy-central', 'icon': 'Comedy-Central.png'},
-    34: {'title': 'TNT', 'path': 'filme/tnt', 'icon': 'TNT2.png'},
-    35: {'title': 'TV1000', 'path': 'filme/tv-1000', 'icon': 'TV1000.png'},
-    36: {'title': 'AMC', 'path': 'filme/amc', 'icon': 'AMC.png'},
-    37: {'title': 'Epic Drama', 'path': 'filme/epic-drama', 'icon': 'Epic-Drama.png'},
-    38: {'title': 'Bollywood TV', 'path': 'filme/bollywood-tv', 'icon': 'BollywoodTV.png'},
-    39: {'title': 'Cinemaraton', 'path': 'filme/cinemaraton', 'icon': 'CineMaraton.png'},
-    40: {'title': 'Comedy-Est', 'path': 'filme/comedy-est', 'icon': 'ComedyEst.png'},
-    41: {'title': 'UTV', 'path': 'muzica/u-tv', 'icon': 'UTV.png'},
-    42: {'title': 'Music Channel', 'path': 'muzica/music-channel', 'icon': 'MusicChannel.png'},
-    43: {'title': 'Kiss TV', 'path': 'muzica/kiss-tv', 'icon': 'KissTV.png'},
-    44: {'title': 'HitMusic Channel', 'path': 'muzica/hit-music-channel', 'icon': 'HitMusicChannel.png'},
-    45: {'title': 'Mezzo', 'path': 'muzica/mezzo', 'icon': 'Mezzo.png'},
-    46: {'title': 'Slager TV [HU]', 'path': 'muzica/slager-tv', 'icon': 'SlagerTV.png'},
-    47: {'title': 'Disney Channel', 'path': 'copii/disney-channel', 'icon': 'DisneyChannel.png'},
-    48: {'title': 'Nickelodeon', 'path': 'copii/nickelodeon', 'icon': 'Nickelodeon.png'},
-    49: {'title': 'Minimax', 'path': 'copii/minimax', 'icon': 'Minimax.png'},
-    50: {'title': 'Disney Junior', 'path': 'copii/disney-junior', 'icon': 'DisneyJunior.png'},
-    51: {'title': 'Cartoon Network', 'path': 'copii/cartoon-network', 'icon': 'CartoonNetw.png'},
-    52: {'title': 'Boomerang', 'path': 'copii/boomerang', 'icon': 'Boomerang.png'},
-    53: {'title': 'Davinci Learning', 'path': 'copii/davinci-learning', 'icon': 'DaVinciLearning.png'},
-    54: {'title': 'JimJam', 'path': 'copii/jimjam', 'icon': 'JimJam.png'},
-    55: {'title': 'DigiSport 1', 'path': 'sport/digisport-1', 'icon': 'DigiSport1.png'},
-    56: {'title': 'DigiSport 2', 'path': 'sport/digisport-2', 'icon': 'DigiSport2.png'},
-    57: {'title': 'DigiSport 3', 'path': 'sport/digisport-3', 'icon': 'DigiSport3.png'},
-    58: {'title': 'DigiSport 4', 'path': 'sport/digisport-4', 'icon': 'DigiSport4.png'},
-    59: {'title': 'EuroSport 1', 'path': 'sport/eurosport', 'icon': 'EuroSport1.png'},
-    60: {'title': 'EuroSport 2', 'path': 'sport/eurosport2', 'icon': 'EuroSport2.png'},
-    61: {'title': 'TVR 1', 'path': 'general/tvr1', 'icon': 'TVR1.png'},
-    62: {'title': 'TVR 2', 'path': 'general/tvr2', 'icon': 'TVR2.png'},
-}
+channels = [
+    {'title': 'Digi24', 'path': 'stiri/digi24', 'icon': 'Digi24.png'},
+    {'title': 'B1 TV', 'path': 'stiri/b1tv', 'icon': 'B1TV.png'},
+    {'title': 'Realitatea TV', 'path': 'stiri/realitatea-tv', 'icon': 'RealitateaTV.png'},
+    {'title': 'Romania TV', 'path': 'stiri/romania-tv', 'icon': 'RomaniaTV.png'},
+    {'title': 'France 24 [EN]', 'path': 'extern/france-24', 'icon': 'France24.png'},
+    {'title': 'TV5 Monde [FR]', 'path': 'extern/tv5-monde', 'icon': 'tv5monde.png'},
+    {'title': 'CNN [EN]', 'path': 'extern/cnn', 'icon': 'CNN.png'},
+    {'title': 'Travel Channel', 'path': 'lifestyle/travel-channel', 'icon': 'TravelChannel.png'},
+    {'title': 'Paprika TV', 'path': 'lifestyle/tv-paprika', 'icon': 'PaprikaTV.png'},
+    {'title': 'Digi Life', 'path': 'tematice/digi-life', 'icon': 'DigiLife.png'},
+    {'title': 'Digi World', 'path': 'tematice/digi-world', 'icon': 'DigiWorld.png'},
+    {'title': 'Viasat Explorer', 'path': 'tematice/viasat-explorer', 'icon': 'ViasatExplore.png'},
+    {'title': 'Discovery Channel', 'path': 'tematice/discovery-channel', 'icon': 'DiscoveryChannel.png'},
+    {'title': 'National Geographic', 'path': 'tematice/national-geographic', 'icon': 'NatGeographic.png'},
+    {'title': 'History Channel', 'path': 'tematice/history-channel', 'icon': 'HistoryChannel.png'},
+    {'title': 'Viasat History', 'path': 'tematice/viasat-history', 'icon': 'ViasatHistory.png'},
+    {'title': 'National Geographic Wild', 'path': 'tematice/national-geographic-wild', 'icon': 'NatGeoWild.png'},
+    {'title': 'BBC Earth', 'path': 'tematice/bbc-earth', 'icon': 'BBC_Earth.png'},
+    {'title': 'Digi Animal World', 'path': 'tematice/digi-animal-world', 'icon': 'DigiAnimalWorld.png'},
+    {'title': 'Viasat Nature', 'path': 'tematice/viasat-nature', 'icon': 'ViasatNature.png'},
+    {'title': 'Cinethronix', 'path': 'tematice/cinethronix', 'icon': 'Cinethronix.png'},
+    {'title': 'HGTV', 'path': 'lifestyle/hgtv', 'icon': 'HGTV.png'},
+    {'title': 'Fishing & Hunting', 'path': 'lifestyle/fishing-and-hunting', 'icon': 'PVTV.png'},
+    {'title': 'CBS Reality', 'path': 'lifestyle/cbs-reality', 'icon': 'CBSReality.png'},
+    {'title': 'TLC Entertainment', 'path': 'tematice/tlc', 'icon': 'TLC.png'},
+    {'title': 'Travel Mix', 'path': 'lifestyle/travel-mix-channel', 'icon': 'TravelMix.png'},
+    {'title': 'E Entertainment', 'path': 'lifestyle/e-entertainment', 'icon': 'EpopDeCulture.png'},
+    {'title': 'AXN', 'path': 'filme/axn', 'icon': 'AXN.png'},
+    {'title': 'AXN Spin', 'path': 'filme/axn-spin', 'icon': 'AXN_Spin.png'},
+    {'title': 'AXN White', 'path': 'filme/axn-white', 'icon': 'AXN_White.png'},
+    {'title': 'AXN Black', 'path': 'filme/axn-black', 'icon': 'AXN_Black.png'},
+    {'title': 'Film Cafe', 'path': 'filme/film-cafe', 'icon': 'FilmCafe.png'},
+    {'title': 'Comedy Central', 'path': 'filme/comedy-central', 'icon': 'Comedy-Central.png'},
+    {'title': 'TNT', 'path': 'filme/tnt', 'icon': 'TNT2.png'},
+    {'title': 'TV1000', 'path': 'filme/tv-1000', 'icon': 'TV1000.png'},
+    {'title': 'Paramount Channel', 'path': 'filme/paramount-channel', 'icon': 'Paramount-Channel.png'},
+    {'title': 'AMC', 'path': 'filme/amc', 'icon': 'AMC.png'},
+    {'title': 'Epic Drama', 'path': 'filme/epic-drama', 'icon': 'Epic-Drama.png'},
+    {'title': 'Bollywood TV', 'path': 'filme/bollywood-tv', 'icon': 'BollywoodTV.png'},
+    {'title': 'Cinemaraton', 'path': 'filme/cinemaraton', 'icon': 'CineMaraton.png'},
+    {'title': 'Comedy-Est', 'path': 'filme/comedy-est', 'icon': 'ComedyEst.png'},
+    {'title': 'UTV', 'path': 'muzica/u-tv', 'icon': 'UTV.png'},
+    {'title': 'Music Channel', 'path': 'muzica/music-channel', 'icon': 'MusicChannel.png'},
+    {'title': 'Kiss TV', 'path': 'muzica/kiss-tv', 'icon': 'KissTV.png'},
+    {'title': 'HitMusic Channel', 'path': 'muzica/hit-music-channel', 'icon': 'HitMusicChannel.png'},
+    {'title': 'Mezzo', 'path': 'muzica/mezzo', 'icon': 'Mezzo.png'},
+    {'title': 'Slager TV [HU]', 'path': 'muzica/slager-tv', 'icon': 'SlagerTV.png'},
+    {'title': 'Disney Channel', 'path': 'copii/disney-channel', 'icon': 'DisneyChannel.png'},
+    {'title': 'Nickelodeon', 'path': 'copii/nickelodeon', 'icon': 'Nickelodeon.png'},
+    {'title': 'Minimax', 'path': 'copii/minimax', 'icon': 'Minimax.png'},
+    {'title': 'Disney Junior', 'path': 'copii/disney-junior', 'icon': 'DisneyJunior.png'},
+    {'title': 'Cartoon Network', 'path': 'copii/cartoon-network', 'icon': 'CartoonNetw.png'},
+    {'title': 'Boomerang', 'path': 'copii/boomerang', 'icon': 'Boomerang.png'},
+    {'title': 'Davinci Learning', 'path': 'copii/davinci-learning', 'icon': 'DaVinciLearning.png'},
+    {'title': 'JimJam', 'path': 'copii/jimjam', 'icon': 'JimJam.png'},
+    {'title': 'DigiSport 1', 'path': 'sport/digisport-1', 'icon': 'DigiSport1.png'},
+    {'title': 'DigiSport 2', 'path': 'sport/digisport-2', 'icon': 'DigiSport2.png'},
+    {'title': 'DigiSport 3', 'path': 'sport/digisport-3', 'icon': 'DigiSport3.png'},
+    {'title': 'DigiSport 4', 'path': 'sport/digisport-4', 'icon': 'DigiSport4.png'},
+    {'title': 'EuroSport 1', 'path': 'sport/eurosport', 'icon': 'EuroSport1.png'},
+    {'title': 'EuroSport 2', 'path': 'sport/eurosport2', 'icon': 'EuroSport2.png'},
+    {'title': 'TVR 1', 'path': 'general/tvr1', 'icon': 'TVR1.png'},
+    {'title': 'TVR 2', 'path': 'general/tvr2', 'icon': 'TVR2.png'},
+]
 
 
 def ROOT():
     """Default view & build channel list."""
 
-    for i in range(len(channels)):
-        idx = i + 1
-        url = ''.join(('https://', digiwebSite, '/', channels[idx].get('path')))
-        addDir(channels[idx].get('title'), url, setIcon(channels[idx].get('icon')))
+    for channel in channels:
+        url = ''.join(('https://', digiwebSite, '/', channel['path']))
+        addDir(channel['title'], url, setIcon(channel['icon']))
 
     """
     # DRM
